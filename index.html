@@ -25,7 +25,7 @@
   
 
   //Hi
->>>>>>> a0ee47813f066e0891f78c5cb724d8ef39d27931
+
   /* create timeline */
   var timeline = [];
 
@@ -69,7 +69,19 @@ timeline.push(preload);
         post_trial_gap: 1000
       }
 
-      var free_recall
+      var free_recall = {
+        type: jsPsychSurveyText,
+        preamble:"Please write down every word you remeber being in the list given. Only write the word if you are fairly confident it was present",
+        questions: [
+          { 
+          name:"word"
+        },{
+          name:"word"
+
+        }
+      ]
+
+      }
      }
 
   // //present each element in the list during the memory phase
