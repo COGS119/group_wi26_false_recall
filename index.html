@@ -49,19 +49,19 @@
    `
      };
 
-  //present each element in the list during the memory phase
-  var number_words_in_list = 15;
-  for (i = 1; i <= number_words_in_list; i++) {
-    //present the current word in the list
-    var trial = {
-      type: jsPsychHtmlKeyboardResponse,
-      choices: [],
-      stimulus: current_list["word_" + i],
-      trial_duration: 1500,
-      post_trial_gap: 1000
-    }
-    timeline.push(trial);
-  }
+  // //present each element in the list during the memory phase
+  // var number_words_in_list = 15;
+  // for (i = 1; i <= number_words_in_list; i++) {
+  //   //present the current word in the list
+  //   var trial = {
+  //     type: jsPsychHtmlKeyboardResponse,
+  //     choices: [],
+  //     stimulus: current_list["word_" + i],
+  //     trial_duration: 1500,
+  //     post_trial_gap: 1000
+  //   }
+  //   timeline.push(trial);
+  // }
 
 
   /* start the experiment */
