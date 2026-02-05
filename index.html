@@ -42,7 +42,8 @@ timeline.push(preload);
     stimulus: "Welcome to the False Recall experiment. <p>Press any key to begin.</p>"
   };
 
-timeline.push(welcome)
+  timeline.push(welcome)
+
   //get one of the lists
   var current_list = memory_lists[0];
   console.log(current_list);
@@ -56,6 +57,20 @@ timeline.push(welcome)
         <p> Press any key to continue<p> 
    `
      };
+
+     //for loop for trials
+     //contains list stimulus, free recall, and gap 
+     for (i = 1; i <= number_of_lists; i++) {
+      var trial = {
+        type: jsPsychHtmlKeyboardResponse,
+        choices: [],
+        stimulus: current_list,
+        trial_duration: 22500,
+        post_trial_gap: 1000
+      }
+
+      var free_recall
+     }
 
   // //present each element in the list during the memory phase
   // var number_words_in_list = 15;
