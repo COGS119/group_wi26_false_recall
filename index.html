@@ -21,10 +21,9 @@
     }
   });
 
-
   
+
   //Hi
->>>>>>> a0ee47813f066e0891f78c5cb724d8ef39d27931
   /* create timeline */
   var timeline = [];
 
@@ -33,9 +32,14 @@
   console.log(current_list);
 
   //add general instructions
-  // var instructions = {
-  //   "Recall the following words"
-  // }
+  var instructions = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: 
+     `<p>Listen to the following words. Do you best to memorize as many words as accuratley as possible.<p>
+      <p>The first trial will begin after this screen<p>
+        <p> Press any key to continue<p> 
+   `
+     };
 
   //present each element in the list during the memory phase
   var number_words_in_list = 15;
