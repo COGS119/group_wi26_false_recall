@@ -59,31 +59,35 @@ timeline.push(preload);
    `
      };
 
+  //push recall instructions
+  timeline.push(instructions)
+
+  //for loop code was giving some errors, commented out for now but will work on fixing soon
      //for loop for trials
      //contains list stimulus, free recall, and gap 
-     for (i = 1; i <= number_of_lists; i++) {
-      var trial = {
-        type: jsPsychHtmlKeyboardResponse,
-        choices: [],
-        stimulus: current_list,
-        trial_duration: 22500,
-        post_trial_gap: 1000
-      }
+    //  for (i = 1; i <= number_of_lists; i++) {
+    //   var trial = {
+    //     type: jsPsychHtmlKeyboardResponse,
+    //     choices: [],
+    //     stimulus: current_list,
+    //     trial_duration: 22500,
+    //     post_trial_gap: 1000
+    //   }
 
-      var free_recall = {
-        type: jsPsychSurveyText,
-        preamble:"Please write down every word you remeber being in the list given. Only write the word if you are fairly confident it was present",
-        questions: [
-          { 
-          name:"word"
-        },{
-          name:"word"
+    //   var free_recall = {
+    //     type: jsPsychSurveyText,
+    //     preamble:"Please write down every word you remeber being in the list given. Only write the word if you are fairly confident it was present",
+    //     questions: [
+    //       { 
+    //       name:"word"
+    //     },{
+    //       name:"word"
 
-        }
-      ]
+    //     }
+    //   ]
 
-      }
-     }
+    //   }
+    //  }
 
   // //present each element in the list during the memory phase
   // var number_words_in_list = 15;
@@ -99,11 +103,35 @@ timeline.push(preload);
   //   timeline.push(trial);
   // }
 
-  //instructuons for recall
+
+  //2.5 min gap for recall
+//   var recall_countdown = {
+//   type: jsPsychHtmlKeyboardResponse,
+//   choices: "NO_KEYS",
+//   trial_duration: 150000, // 2 min 30 sec in ms
+//   stimulus: function () {
+//     var remaining = jsPsych.getCurrentTrial().trial_duration -
+//                     jsPsych.getTotalTime();
+
+//     var totalSeconds = Math.ceil(remaining / 1000);
+//     var minutes = Math.floor(totalSeconds / 60);
+//     var seconds = totalSeconds % 60;
+
+//     return `
+//       <p> Now take a moment to remember the list you just heard</p>
+//       <p>Time remaining: <strong>${minutes}:${seconds.toString().padStart(2, '0')}</strong></p>
+//     `;
+//   }
+// };
+
+// timeline.push(recall_countdown);
+
+  //instructuons for recognition
  var recognition_intro = {
   type: jsPsychHtmlKeyboardResponse,
     stimulus: 
-     `<p>You will now receive another test. Here you will be shown a series of words that you may have seen previously. Your task is to rate your confidence of seeing these words on a 4 point scale<p>
+     `<p>You will now receive another test.<p> 
+      <p>Here you will be shown a series of words that you may have seen previously. Your task is to rate your confidence of seeing these words on a 4 point scale<p>
       <p>1: Definitely new<p> 
       <p>2: Maybe new<p>
       <p>3: Maybe seen before<p>
@@ -148,15 +176,16 @@ var recognition_trial = {
   post_trial_gap: 2000
 };
 
-recognition_blocks.forEach(function(block){
-  var trials = block.map(function(word){
-    return { word: word };
-  });
-  timeline.push({
-    timeline: [recognition_trial],
-    timenline_variables: trials
-  });
-});
+//recognition code was giving some errors, commented out for now but will work on fixing soon
+// recognition_blocks.forEach(function(block){
+//   var trials = block.map(function(word){
+//     return { word: word };
+//   });
+//   timeline.push({
+//     timeline: [recognition_trial],
+//     timeline_variables: trials
+//   });
+// });
 
 
 
