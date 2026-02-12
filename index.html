@@ -62,7 +62,7 @@ timeline.push(preload);
   ]
 
   var number_of_lists = 6
-
+  var test_block = memory_lists; 
   
   //add general instructions
   var instructions = {
@@ -82,7 +82,7 @@ timeline.push(preload);
      //contains list stimulus, free recall, and gap 
      for (i = 1; i <= number_of_lists; i++) {
       //get one of the lists
-      var current_list = memory_lists[i];
+      var current_list = test_block[i];
       console.log(current_list);
       
       
