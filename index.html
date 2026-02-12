@@ -45,10 +45,24 @@ timeline.push(preload);
 
   timeline.push(welcome)
 
-  //get one of the lists
-  var current_list = memory_lists[0];
-  console.log(current_list);
+  var memory_lists  = [
+    {
+     text: "List 1", 
+     audio: "stimuli/find_alpaca.wav",
+    },
+    {
+    text: "List 2",  
+    audio:"stimuli/find_armadillo.wav",
+    },
+    {
+    text: "list 3",  
+    audio: "stimuli/find_bear.wav",
+    }
+  ]
 
+  var number_of_lists = 6
+
+  
   //add general instructions
   var instructions = {
     type: jsPsychHtmlKeyboardResponse,
@@ -65,29 +79,65 @@ timeline.push(preload);
   //for loop code was giving some errors, commented out for now but will work on fixing soon
      //for loop for trials
      //contains list stimulus, free recall, and gap 
-    //  for (i = 1; i <= number_of_lists; i++) {
-    //   var trial = {
-    //     type: jsPsychHtmlKeyboardResponse,
-    //     choices: [],
-    //     stimulus: current_list,
-    //     trial_duration: 22500,
-    //     post_trial_gap: 1000
-    //   }
+     for (i = 1; i <= number_of_lists; i++) {
+      //get one of the lists
+      var current_list = memory_lists[i];
+      console.log(current_list);
+      
+      
+      var trial = {
+        type: jsPsychHtmlKeyboardResponse,
+        choices: [],
+        stimulus: current_list['audio'],
+        prompt: current_list['text'],
+        trial_duration: 22500,
+        post_trial_gap: 1000,
+                 
+      }
 
-    //   var free_recall = {
-    //     type: jsPsychSurveyText,
-    //     preamble:"Please write down every word you remeber being in the list given. Only write the word if you are fairly confident it was present",
-    //     questions: [
-    //       { 
-    //       name:"word"
-    //     },{
-    //       name:"word"
+      var free_recall = {
+        type: jsPsychSurveyText,
+        preamble:"Please write down every word you remeber being in the list given. Only write the word if you are fairly confident it was present",
+        questions: [
+          { 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        },{
+          name:"word"
+        },{ 
+          name:"word"
+        }
+      ]
 
-    //     }
-    //   ]
+      }
+     };
 
-    //   }
-    //  }
+     //end of for loop
+
+     timeline.push(trial, free_recall)
 
   // //present each element in the list during the memory phase
   // var number_words_in_list = 15;
@@ -187,6 +237,7 @@ var recognition_trial = {
 //     timeline_variables: trials
 //   });
 // });
+
 
 
 
