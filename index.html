@@ -48,8 +48,8 @@ timeline.push(preload);
 
   var memory_lists  = [
     {
-    text: 'List 1', 
-    audio: 'stimuli/find_alpaca.wav',
+    text: "List 1",    
+    audio: "stimuli/find_alpaca.wav",
     },
     {
     text: "List 2",  
@@ -59,9 +59,9 @@ timeline.push(preload);
     text: "list 3",  
     audio: "stimuli/find_bear.wav",
     }
-  ]
+  ];
 
-  var number_of_lists = 6
+  
     
   //add general instructions
   var instructions = {
@@ -79,7 +79,7 @@ timeline.push(preload);
   // for loop code was giving some errors, commented out for now but will work on fixing soon
   //    for loop for trials
   //    contains list stimulus, free recall, and gap 
-     for (i = 1; i <= number_of_lists; i++) {
+     for (let i = 0; i <= memory_lists.length; i++) {
       //get one of the lists
       var current_list = memory_lists[i];
       console.log(current_list);
@@ -87,7 +87,7 @@ timeline.push(preload);
       
       var trial = {
         type: jsPsychAudioKeyboardResponse,
-        choices: [],
+        choices: "NO_KEYS",
         stimulus: current_list['audio'],
         prompt: current_list['text'],
         trial_duration: 22500,
