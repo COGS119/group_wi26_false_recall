@@ -9,7 +9,10 @@
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert@2.0.0"></script>
   <!-- load in the recall lists-->
   <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script> 
+<<<<<<< Updated upstream
   <script src="jspsych/plugin-audio-keyboard-response.js"></script>
+=======
+>>>>>>> Stashed changes
   <script src="stimuli/roediger_mcdermott_1995_appendix_word_list.js"></script>
   <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
 </head>
@@ -87,7 +90,7 @@ timeline.push(preload);
       
       
       var trial = {
-        type: jsPsychHtmlKeyboardResponse,
+        type: jsPsychAudioKeyboardResponse,
         choices: [],
         stimulus: current_list['audio'],
         prompt: current_list['text'],
