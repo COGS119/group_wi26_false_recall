@@ -62,7 +62,7 @@ timeline.push(preload);
   ]
 
   var number_of_lists = 6
-
+  var test_block = memory_lists; 
   
   //add general instructions
   var instructions = {
@@ -82,7 +82,7 @@ timeline.push(preload);
      //contains list stimulus, free recall, and gap 
      for (i = 1; i <= number_of_lists; i++) {
       //get one of the lists
-      var current_list = memory_lists[i];
+      var current_list = test_block[i];
       console.log(current_list);
       
       
@@ -156,26 +156,16 @@ timeline.push(preload);
 
 
   //2.5 min gap for recall
-//   var recall_countdown = {
-//   type: jsPsychHtmlKeyboardResponse,
-//   choices: "NO_KEYS",
-//   trial_duration: 150000, // 2 min 30 sec in ms
-//   stimulus: function () {
-//     var remaining = jsPsych.getCurrentTrial().trial_duration -
-//                     jsPsych.getTotalTime();
+  var recall_countdown = {
+  type: jsPsychHtmlKeyboardResponse,
+  choices: "NO_KEYS",
+  trial_duration: 150000, // 2 min 30 sec in ms
+  stimulus:  `
+      <p> Now take a moment to remember the list you just heard</p>
+    `
+};
 
-//     var totalSeconds = Math.ceil(remaining / 1000);
-//     var minutes = Math.floor(totalSeconds / 60);
-//     var seconds = totalSeconds % 60;
-
-//     return `
-//       <p> Now take a moment to remember the list you just heard</p>
-//       <p>Time remaining: <strong>${minutes}:${seconds.toString().padStart(2, '0')}</strong></p>
-//     `;
-//   }
-// };
-
-// timeline.push(recall_countdown);
+timeline.push(recall_countdown);
 
   //instructuons for recognition
  var recognition_intro = {
