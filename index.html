@@ -152,16 +152,16 @@ var recgonition_blocks = [
   ["Sugar","Cherry","Door","Salty","Ghost","Sour","Sweet"]
 ];
 
-//Creating the confidence test for recognition
-
 var recognition_trial = {
   type: jsPsychSurveyLikert,
   questions: [
     {
       prompt: function () {
-        return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
+        return "<h2>" +
+          jsPsych.timelineVariable("word") +
+          "</h2>";
       },
-      labels: [
+      label: [
         "1: Definitely New",
         "2: Maybe New",
         "3: Maybe Seen Before",
@@ -170,50 +170,47 @@ var recognition_trial = {
       required: true
     }
   ],
-  data: {
+  };  data: {
     word: jsPsych.timelineVariable("word")
-  },
+  };
   post_trial_gap: 2000
-};
-
 
 var recognition_critical_lures = {
   type: jsPsychSurveyLikert,
   questions: [ 
     { 
       prompt: "Was 'chair' in the list you heard?",
-      labels: ["yes", "no"] ,
+      labels: ["yes", "no"], 
       required: true 
     }, 
     { 
       prompt: "Was 'mountain' in the list you heard?",
-      labels: ["yes", "no"] ,
+      labels: ["yes", "no"], 
       required: true 
     }, 
     { 
       prompt: "Was 'needle' in the list you heard?",
-      labels: ["yes", "no"] ,
+      labels: ["yes", "no"], 
       required: true 
     }, 
     { 
       prompt: "Was 'rough' in the list you heard?",
-      labels: ["yes", "no"] ,
+      labels: ["yes", "no"], 
       required: true 
     }, 
     { 
       prompt: "Was 'sleep' in the list you heard?",
-      labels: ["yes", "no"] ,
+      labels: ["yes", "no"], 
       required: true 
     }, 
     { 
       prompt: "Was 'sweet' in the list you heard?",
-      labels: ["yes", "no"] ,
+      labels: ["yes", "no"], 
       required: true
     }
   ]
 
 };
-
 
 //recognition code was giving some errors, commented out for now but will work on fixing soon
 // recognition_blocks.forEach(function(block){
