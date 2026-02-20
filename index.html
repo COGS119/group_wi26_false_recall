@@ -6,6 +6,7 @@
   <script src="https://unpkg.com/jspsych@8.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-audio-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert@2.0.0"></script>
   <!-- load in the recall lists-->
   <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
@@ -58,7 +59,7 @@ timeline.push(enter_fullscreen);
   //preloading audio here
   var preload = {
     type: jsPsychPreload,
-    audio: []
+    audio: memory_lists.map(list => list.stimulus)
   };
   timeline.push(preload);
 
@@ -108,9 +109,9 @@ timeline.push(participant_id_entry);
     var current_list = memory_lists[i];
     console.log(current_list);
     var trial = {
-      type: jsPsychHtmlKeyboardResponse,
-      choices: [],
+      type: jsPsychAudioKeyboardResponse,
       stimulus: current_list.stimulus,
+      choices: "NO_KEYS"
       trial_duration: 22500,
       post_trial_gap: 1000
     }
