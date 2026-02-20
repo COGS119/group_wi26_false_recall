@@ -159,21 +159,6 @@ timeline.push(participant_id_entry);
      
    }
 
-  //present each element in the list during the memory phase
-  var number_words_in_list = 15;
-  var current_list = memory_lists[0];
-  for (let i = 1; i <= number_words_in_list; i++) {
-    //present the current word in the list
-    var trial = {
-      type: jsPsychHtmlKeyboardResponse,
-      choices: [],
-      stimulus: current_list["word_" + i],
-      trial_duration: 1500,
-      post_trial_gap: 5000
-    }
-    timeline.push(trial);
-  }
-
 
  
   //instructuons for recognition
@@ -195,13 +180,74 @@ timeline.push(participant_id_entry);
 
   //Test Blocks for each list
   var recognition_blocks = [
-    ["Table", "Floor", "Ball", "Shoe", "Couch", "Relax", "Chair"],
-    ["Peak", "Hike", "Draw", "Hill", "Car", "Snow", "Mountain"],
-    ["Thread", "Splinter", "Pin", "Stitch", "Stop", "Fast", "Needle"],
-    ["Tough", "Chalk", "Key", "Smooth", "Spike", "Project", "Rough"],
-    ["Bed", "Calm", "Chess", "Fish", "Tired", "Coma", "Sleep"],
-    ["Sugar", "Cherry", "Door", "Salty", "Ghost", "Sour", "Sweet"]
-  ];
+
+  // LIST 1
+  [
+    {word: "Table", condition: "studied"},
+    {word: "Couch", condition: "studied"},
+    {word: "Floor", condition: "weak"},
+    {word: "Relax", condition: "weak"},
+    {word: "Ball", condition: "unrelated"},
+    {word: "Shoe", condition: "unrelated"},
+    {word: "Chair", condition: "critical"}
+  ],
+
+  // LIST 2
+  [
+    {word: "Hill", condition: "studied"},
+    {word: "Peak", condition: "studied"},
+    {word: "Snow", condition: "weak"},
+    {word: "Hike", condition: "weak"},
+    {word: "Car", condition: "unrelated"},
+    {word: "Draw", condition: "unrelated"},
+    {word: "Mountain", condition: "critical"}
+  ],
+
+  // LIST 3
+  [
+    {word: "Thread", condition: "studied"},
+    {word: "Pin", condition: "studied"},
+    {word: "Stitch", condition: "weak"},
+    {word: "Splinter", condition: "weak"},
+    {word: "Stop", condition: "unrelated"},
+    {word: "Fast", condition: "unrelated"},
+    {word: "Needle", condition: "critical"}
+  ],
+
+  // LIST 4
+  [
+    {word: "Smooth", condition: "studied"},
+    {word: "Tough", condition: "studied"},
+    {word: "Spike", condition: "weak"},
+    {word: "Chalk", condition: "weak"},
+    {word: "Key", condition: "unrelated"},
+    {word: "Project", condition: "unrelated"},
+    {word: "Rough", condition: "critical"}
+  ],
+
+  // LIST 5
+  [
+    {word: "Bed", condition: "studied"},
+    {word: "Tired", condition: "studied"},
+    {word: "Coma", condition: "weak"},
+    {word: "Calm", condition: "weak"},
+    {word: "Fish", condition: "unrelated"},
+    {word: "Chess", condition: "unrelated"},
+    {word: "Sleep", condition: "critical"}
+  ],
+
+  // LIST 6
+  [
+    {word: "Sour", condition: "studied"},
+    {word: "Sugar", condition: "studied"},
+    {word: "Cherry", condition: "weak"},
+    {word: "Salty", condition: "weak"},
+    {word: "Door", condition: "unrelated"},
+    {word: "Ghost", condition: "unrelated"},
+    {word: "Sweet", condition: "critical"}
+  ]
+
+];
 
   var recognition_trial = {
   type: jsPsychSurveyLikert,
@@ -220,50 +266,48 @@ timeline.push(participant_id_entry);
     }
   ],
   data: {
-    word: jsPsych.timelineVariable("word")
-  },
-  post_trial_gap: 2000
+    word: jsPsych.timelineVariable("word"),
+    condition: jsPsych.timelineVariable("condition")
+  }
 };
+  var feedback_trial = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function() {
 
-  var recognition_critical_lures = {
-    type: jsPsychSurveyLikert,
-    questions: [
-      {
-        prompt: "Was 'chair' in the list you heard?",
-        labels: ["yes", "no"],
-        required: true
-      },
-      {
-        prompt: "Was 'mountain' in the list you heard?",
-        labels: ["yes", "no"],
-        required: true
-      },
-      {
-        prompt: "Was 'needle' in the list you heard?",
-        labels: ["yes", "no"],
-        required: true
-      },
-      {
-        prompt: "Was 'rough' in the list you heard?",
-        labels: ["yes", "no"],
-        required: true
-      },
-      {
-        prompt: "Was 'sleep' in the list you heard?",
-        labels: ["yes", "no"],
-        required: true
-      },
-      {
-        prompt: "Was 'sweet' in the list you heard?",
-        labels: ["yes", "no"],
-        required: true
-      }
-    ],
-  button_label: "→"
-  };
-  timeline.push(recognition_critical_lures);
+    var last = jsPsych.data.get().last(1).values()[0];
+    var rating = Number(last.response.Q0);
 
+    var called_old = rating >= 2;
+    var correct = false;
 
+    if (last.condition === "studied" && called_old) correct = true;
+    if (last.condition !== "studied" && !called_old) correct = true;
+
+    return correct
+      ? "<p><strong>Correct</strong></p>"
+      : "<p><strong>Incorrect</strong></p>";
+  },
+  choices: "NO_KEYS",
+  trial_duration: 1000
+};
+recognition_blocks.forEach(function(block){
+
+  var first_word = block[0];
+  var last_word = block[6];
+
+  var middle_words = block.slice(1,6);
+  middle_words = jsPsych.randomization.shuffle(middle_words);
+
+  var final_block = [first_word]
+    .concat(middle_words)
+    .concat([last_word]);
+
+  timeline.push({
+    timeline: [recognition_trial, feedback_trial],
+    timeline_variables: final_block
+  });
+
+});
   //recognition code was giving some errors, commented out for now but will work on fixing soon
   // recognition_blocks.forEach(function(block){
   //   var trials = block.map(function(word){
