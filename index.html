@@ -111,10 +111,8 @@ timeline.push(participant_id_entry);
     var trial = {
       type: jsPsychAudioKeyboardResponse,
       stimulus: current_list.stimulus,
-      choices: "NO_KEYS"
-      trial_duration: 22500,
-      post_trial_gap: 1000
-    }
+      choices: "ALL_KEYS"
+    };
 
     var free_recall = {
       type: jsPsychSurveyText,
