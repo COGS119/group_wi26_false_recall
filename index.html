@@ -149,7 +149,7 @@ timeline.push(participant_id_entry);
         name:"word"
       },{
         name:"word"
-      },
+      }
     ]
 
     };
@@ -221,10 +221,11 @@ timeline.push(participant_id_entry);
         required: true
       }
     ],
-  }; data: {
-    word: jsPsych.timelineVariable("word")
-  },
-  post_trial_gap: 2000
+    data: {
+      word: jsPsych.timelineVariable("word")
+    },
+    post_trial_gap: 2000
+  };
 
   var recognition_critical_lures = {
     type: jsPsychSurveyLikert,
