@@ -7,7 +7,6 @@
   <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert@2.0.0"></script>
-  
   <!-- load in the recall lists-->
   <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
   <script src="stimuli/roediger_mcdermott_1995_appendix_word_list.js"></script>
@@ -58,10 +57,9 @@ timeline.push(enter_fullscreen);
 
   //preloading audio here
   var preload = {
-  type: jsPsychPreload,
-  audio: memory_lists.map(list => list.stimulus)
-};
-  
+    type: jsPsychPreload,
+    audio: []
+  };
   timeline.push(preload);
 
   //Welcome message
@@ -73,14 +71,14 @@ timeline.push(enter_fullscreen);
   timeline.push(welcome)
 
   var memory_lists = [
-  {stimulus: "stimuli/cogs119_list1.wav"},
-  {stimulus: "stimuli/cogs119_list2.wav"},
-  {stimulus: "stimuli/cogs119_list3.wav"},
-  {stimulus: "stimuli/cogs119_list4.wav"},
-  {stimulus: "stimuli/cogs119_list5.wav"},
-  {stimulus: "stimuli/cogs119_list6.wav"}
-];
-  
+    {stimulus: "stimuli/Cogs 119 List 1.wav"},
+    {stimulus: "stimuli/Cogs 119 List 2.wav"},
+    {stimulus: "stimuli/Cogs 119 List 3.wav"},
+    {stimulus: "stimuli/Cogs 119 List 4.wav"},
+    {stimulus: "stimuli/Cogs 119 List 5.wav"},
+    {stimulus: "stimuli/Cogs 119 List 6.wav"}
+  ];
+
  // survey for participant id
  var participant_id_entry = {
    type: jsPsychSurveyText,
@@ -115,7 +113,7 @@ timeline.push(participant_id_entry);
       stimulus: current_list.stimulus,
       trial_duration: 22500,
       post_trial_gap: 1000
-};
+    }
 
     var free_recall = {
       type: jsPsychSurveyText,
