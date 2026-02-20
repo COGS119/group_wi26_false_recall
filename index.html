@@ -112,9 +112,11 @@ timeline.push(participant_id_entry);
     console.log(current_list);
     var trial = {
   type: jsPsychAudioKeyboardResponse,
+  choices: [],
   stimulus: current_list.stimulus,
-  choices: "NO_KEYS"
-};
+  trial_duration: 22500,
+  post_trial_gap: 1000
+}
 
     var free_recall = {
       type: jsPsychSurveyText,
