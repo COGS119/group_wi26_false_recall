@@ -59,9 +59,10 @@ timeline.push(enter_fullscreen);
 
   //preloading audio here
   var preload = {
-    type: jsPsychPreload,
-    audio: []
-  };
+  type: jsPsychPreload,
+  audio: memory_lists.map(list => list.stimulus)
+};
+  
   timeline.push(preload);
 
   //Welcome message
@@ -73,14 +74,14 @@ timeline.push(enter_fullscreen);
   timeline.push(welcome)
 
   var memory_lists = [
-    {stimulus: "stimuli/Cogs 119 List 1.wav"},
-    {stimulus: "stimuli/Cogs 119 List 2.wav"},
-    {stimulus: "stimuli/Cogs 119 List 3.wav"},
-    {stimulus: "stimuli/Cogs 119 List 4.wav"},
-    {stimulus: "stimuli/Cogs 119 List 5.wav"},
-    {stimulus: "stimuli/Cogs 119 List 6.wav"}
-  ];
-
+  {stimulus: "stimuli/cogs119_list1.wav"},
+  {stimulus: "stimuli/cogs119_list2.wav"},
+  {stimulus: "stimuli/cogs119_list3.wav"},
+  {stimulus: "stimuli/cogs119_list4.wav"},
+  {stimulus: "stimuli/cogs119_list5.wav"},
+  {stimulus: "stimuli/cogs119_list6.wav"}
+];
+  
  // survey for participant id
  var participant_id_entry = {
    type: jsPsychSurveyText,
