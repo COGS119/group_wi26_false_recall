@@ -204,28 +204,26 @@ timeline.push(participant_id_entry);
   ];
 
   var recognition_trial = {
-    type: jsPsychSurveyLikert,
-    questions: [
-      {
-        prompt: function () {
-          return "<h2>" +
-            jsPsych.timelineVariable("word") +
-            "</h2>";
-        },
-        label: [
-          "1: Definitely New",
-          "2: Maybe New",
-          "3: Maybe Seen Before",
-          "4: Definitely Seen Before"
-        ],
-        required: true
-      }
-    ],
-    data: {
-      word: jsPsych.timelineVariable("word")
-    },
-    post_trial_gap: 2000
-  };
+  type: jsPsychSurveyLikert,
+  questions: [
+    {
+      prompt: function () {
+        return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
+      },
+      labels: [
+        "Definitely New",
+        "Probably New",
+        "Probably Studied",
+        "Definitely Studied"
+      ],
+      required: true
+    }
+  ],
+  data: {
+    word: jsPsych.timelineVariable("word")
+  },
+  post_trial_gap: 2000
+};
 
   var recognition_critical_lures = {
     type: jsPsychSurveyLikert,
