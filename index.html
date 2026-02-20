@@ -152,12 +152,17 @@ timeline.push(participant_id_entry);
       },
     ]
 
-    }
+    };
+
+     timeline.push(trial);
+     timeline.push(free_recall);
+     
    }
 
   //present each element in the list during the memory phase
   var number_words_in_list = 15;
-  for (i = 1; i <= number_words_in_list; i++) {
+  var current_list = memory_lists[0];
+  for (let i = 1; i <= number_words_in_list; i++) {
     //present the current word in the list
     var trial = {
       type: jsPsychHtmlKeyboardResponse,
@@ -189,7 +194,7 @@ timeline.push(participant_id_entry);
   timeline.push(recognition_intro);
 
   //Test Blocks for each list
-  var recgonition_blocks = [
+  var recognition_blocks = [
     ["Table", "Floor", "Ball", "Shoe", "Couch", "Relax", "Chair"],
     ["Peak", "Hike", "Draw", "Hill", "Car", "Snow", "Mountain"],
     ["Thread", "Splinter", "Pin", "Stitch", "Stop", "Fast", "Needle"],
@@ -218,7 +223,7 @@ timeline.push(participant_id_entry);
     ],
   }; data: {
     word: jsPsych.timelineVariable("word")
-  };
+  },
   post_trial_gap: 2000
 
   var recognition_critical_lures = {
