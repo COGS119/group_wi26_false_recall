@@ -103,14 +103,14 @@ timeline.push(participant_id_entry);
 
   //for loop for trials
   //contains list stimulus, free recall, and gap 
-   for (i = 0; i <= memory_lists.length; i++) {
+   for (let i = 0; i < memory_lists.length; i++) {
     //get one of the lists
     var current_list = memory_lists[i];
     console.log(current_list);
     var trial = {
       type: jsPsychHtmlKeyboardResponse,
       choices: [],
-      stimulus: current_list,
+      stimulus: current_list.stimulus,
       trial_duration: 22500,
       post_trial_gap: 1000
     }
