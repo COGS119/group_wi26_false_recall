@@ -71,13 +71,13 @@ timeline.push(enter_fullscreen);
   timeline.push(welcome)
 
   var memory_lists = [
-    {stimulus: "stimuli/Cogs 119 List 1.wav"},
-    {stimulus: "stimuli/Cogs 119 List 2.wav"},
-    {stimulus: "stimuli/Cogs 119 List 3.wav"},
-    {stimulus: "stimuli/Cogs 119 List 4.wav"},
-    {stimulus: "stimuli/Cogs 119 List 5.wav"},
-    {stimulus: "stimuli/Cogs 119 List 6.wav"},
-  ]
+    {stimulus: "stimuli/list1.wav"},
+    {stimulus: "stimuli/list2.wav"},
+    {stimulus: "stimuli/list3.wav"},
+    {stimulus: "stimuli/list4.wav"},
+    {stimulus: "stimuli/list5.wav"},
+    {stimulus: "stimuli/list6.wav"}
+];
 
  // survey for participant id
  var participant_id_entry = {
@@ -103,14 +103,14 @@ timeline.push(participant_id_entry);
 
   //for loop for trials
   //contains list stimulus, free recall, and gap 
-   for (i = 0; i <= memory_lists.length; i++) {
+   for (let i = 0; i < memory_lists.length; i++) {
     //get one of the lists
     var current_list = memory_lists[i];
     console.log(current_list);
     var trial = {
       type: jsPsychHtmlKeyboardResponse,
       choices: [],
-      stimulus: current_list,
+      stimulus: current_list.stimulus,
       trial_duration: 22500,
       post_trial_gap: 1000
     }
@@ -149,15 +149,20 @@ timeline.push(participant_id_entry);
         name:"word"
       },{
         name:"word"
-      },
+      }
     ]
 
-    }
+    };
+
+     timeline.push(trial);
+     timeline.push(free_recall);
+     
    }
 
   //present each element in the list during the memory phase
   var number_words_in_list = 15;
-  for (i = 1; i <= number_words_in_list; i++) {
+  var current_list = memory_lists[0];
+  for (let i = 1; i <= number_words_in_list; i++) {
     //present the current word in the list
     var trial = {
       type: jsPsychHtmlKeyboardResponse,
@@ -199,27 +204,26 @@ timeline.push(participant_id_entry);
   ];
 
   var recognition_trial = {
-    type: jsPsychSurveyLikert,
-    questions: [
-      {
-        prompt: function () {
-          return "<h2>" +
-            jsPsych.timelineVariable("word") +
-            "</h2>";
-        },
-        label: [
-          "1: Definitely New",
-          "2: Maybe New",
-          "3: Maybe Seen Before",
-          "4: Definitely Seen Before"
-        ],
-        required: true
-      }
-    ],
-  }; data: {
+  type: jsPsychSurveyLikert,
+  questions: [
+    {
+      prompt: function () {
+        return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
+      },
+      labels: [
+        "Definitely New",
+        "Probably New",
+        "Probably Studied",
+        "Definitely Studied"
+      ],
+      required: true
+    }
+  ],
+  data: {
     word: jsPsych.timelineVariable("word")
-  };
+  },
   post_trial_gap: 2000
+};
 
   var recognition_critical_lures = {
     type: jsPsychSurveyLikert,
