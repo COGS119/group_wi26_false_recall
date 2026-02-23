@@ -193,37 +193,141 @@ timeline.push(participant_id_entry);
   //push recognition test intructions
   timeline.push(recognition_intro);
 
-  //Test Blocks for each list
-  var recognition_blocks = [
-    ["Table", "Floor", "Ball", "Shoe", "Couch", "Relax", "Chair"],
-    ["Peak", "Hike", "Draw", "Hill", "Car", "Snow", "Mountain"],
-    ["Thread", "Splinter", "Pin", "Stitch", "Stop", "Fast", "Needle"],
-    ["Tough", "Chalk", "Key", "Smooth", "Spike", "Project", "Rough"],
-    ["Bed", "Calm", "Chess", "Fish", "Tired", "Coma", "Sleep"],
-    ["Sugar", "Cherry", "Door", "Salty", "Ghost", "Sour", "Sweet"]
+  //Test Blocks for each list including he word condition
+  var recognition_structure = [
+    {
+      list: 1,
+      studied: ["Table", "Couch"],
+      critical: "Chair",
+      weak: ["Floor", "Bed"],
+      unrelated: ["Ball","Shoe"]
+    },
+    {
+      list: 2,
+      studied: ["Hill", "Peak"],
+      critical: "Mountain",
+      weak: ["Snow", "Hike"],
+      unrelated: ["Car","Draw"]
+    },
+    {
+      list: 3,
+      studied: ["Thread", "Pin"],
+      critical: "Needle",
+      weak: ["Stitch", "Splinter"],
+      unrelated: ["Stop","Fast"]
+    },
+    {
+      list: 4,
+      studied: ["Smooth", "Touch"],
+      critical: "Rough",
+      weak: ["Spike", "Chalk"],
+      unrelated: ["Key","Project"]
+    },
+    {
+      list: 5,
+      studied: ["Bed", "Tired"],
+      critical: "Sleep",
+      weak: ["Coma", "Calm"],
+      unrelated: ["Fish","Chess"]
+    },
+    {
+      list: 6,
+      studied: ["Sour", "Sugar"],
+      critical: "Sweet",
+      weak: ["Cherry", "Salty"],
+      unrelated: ["Door","Ghost"]
+    },
   ];
 
+  //Make the 7 word test blocks for each list
+  var recognition_blocks = [];
+
+  recognition_structure.forEach(function(list_obj){
+    //First studied work - 5 randomized from second sudied, weakly related, and unrelated - critical lure
+    
+    //First Studied word
+    var first_word = {
+      word: list_obj.studied[0],
+      condition: "studied",
+      list: list_obj.list
+    };
+
+    //second studied word
+    var studied_second = {
+      word: list_obj.studied[1],
+      condition: "studied",
+      list: list_obj.list
+    };
+
+    //weakly related words
+    var weak_words = list_obj.weak.map(w =>({
+      word: w,
+      condition: "weakly related",
+      list: list_obj.list
+    }));
+    
+    //unrelated words
+    var unrelated_words = list_obj.unrelated.map(w => ({
+      word: w,
+      condition: "unrelated",
+      list: list_obj.list
+    }));
+
+    //critical lure
+    var critical_word = {
+      word: list_obj.critical,
+      condition: "critical",
+      list: list_obj.list
+    };
+
+    //Randomize middle
+    var middle_items = [
+      studied_second,
+      weak_words,
+      unrelated_words
+    ];
+
+    middle_items = jsPsych.randomization.shuffle(middle_items);
+
+    var block = [
+      first_word,
+      middle_items,
+      critical_word
+    ];
+    recognition_blocks.push(block);
+  });
+
   var recognition_trial = {
-  type: jsPsychSurveyLikert,
-  questions: [
-    {
-      prompt: function () {
-        return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
-      },
-      labels: [
-        "Definitely New",
-        "Probably New",
-        "Probably Studied",
-        "Definitely Studied"
-      ],
-      required: true
+    type: jsPsychSurveyLikert,
+    questions: [
+      {
+        prompt: function(){
+          return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
+        },
+        labels: [
+          "Definitely New",
+          "Probably New",
+          "Probably Studied",
+          "Definitely Studied"
+        ],
+        required: true
+      }
+    ],
+    data: {
+      word: jsPsych.timelineVariable("word"),
+      condition: jspysch.timelineVariable("condition"),
+      list: jsPsych.timelineVariable("list")
     }
-  ],
-  data: {
-    word: jsPsych.timelineVariable("word")
-  },
-  post_trial_gap: 2000
-};
+  };
+
+  //push test blocks to match trial 
+  //STILL NEED TO MATCH THE LIST RANDOMIZATION
+  recognition_blocks.forEach(function(block){
+    timeline.push({
+      timeline: [recognition_trial],
+      timeline_variables: block
+    });
+  });
 
   var recognition_critical_lures = {
     type: jsPsychSurveyLikert,
@@ -263,17 +367,6 @@ timeline.push(participant_id_entry);
   };
   timeline.push(recognition_critical_lures);
 
-
-  //recognition code was giving some errors, commented out for now but will work on fixing soon
-  // recognition_blocks.forEach(function(block){
-  //   var trials = block.map(function(word){
-  //     return { word: word };
-  //   });
-  //   timeline.push({
-  //     timeline: [recognition_trial],
-  //     timeline_variables: trials
-  //   });
-  // });
 
   //PLEASE KEEP FOR ALL FUTURE ITERATIONS
   //this portion of the code ensures that the data gets sent to be stored on OSF
