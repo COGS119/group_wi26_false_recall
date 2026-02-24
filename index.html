@@ -320,13 +320,12 @@ timeline.push(participant_id_entry);
     recognition_blocks.push(block);
   });
 
-  var recognition_trial = {
-    type: jsPsychSurveyLikert,
-    questions: [
+var recognition_trial = {
+  type: jsPsychSurveyLikert,
+  questions: function() {
+    return [
       {
-        prompt: function(){
-          return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
-        },
+        prompt: "<h2>" + jsPsych.timelineVariable('word', true) + "</h2>",
         labels: [
           "Definitely New",
           "Probably New",
@@ -335,13 +334,14 @@ timeline.push(participant_id_entry);
         ],
         required: true
       }
-    ],
-    data: {
-      word: jsPsych.timelineVariable("word"),
-      condition: jsPsych.timelineVariable("condition"),
-      list: jsPsych.timelineVariable("list")
-    }
-  };
+    ];
+  },
+  data: {
+    word: jsPsych.timelineVariable("word"),
+    condition: jsPsych.timelineVariable("condition"),
+    list: jsPsych.timelineVariable("list")
+  }
+};
 
   //push test blocks to match trial 
   //STILL NEED TO MATCH THE LIST RANDOMIZATION
