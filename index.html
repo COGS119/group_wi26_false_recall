@@ -59,7 +59,14 @@ timeline.push(enter_fullscreen);
   //preloading audio here
   var preload = {
     type: jsPsychPreload,
-    audio: []
+    audio: [
+      'audio/find_Cogs 119 List 1.wav', 
+    'audio/find_Cogs 119 List 2.wav', 
+    'audio/find_Cogs 119 List 3.wav', 
+    'audio/find_Cogs 119 List 4.wav', 
+    'audio/find_Cogs 119 List 5.wav',
+    'audio/find_Cogs 119 List 6.wav'
+  ]
   };
   timeline.push(preload);
 
@@ -313,14 +320,13 @@ timeline.push(participant_id_entry);
     recognition_blocks.push(block);
   });
 
-  var recognition_trial = {
-    type: jsPsychSurveyLikert,
-    questions: [
+var recognition_trial = {
+  type: jsPsychSurveyLikert,
+  questions: function() {
+    return [
       {
-        prompt: function(){
-          var word = jsPsych.evaluateTimelineVariable("word");
-          return "<h2>" + word + "</h2>";
-      },
+        prompt: "<h2>%word%</h2>",
+        
         labels: [
           "Definitely New",
           "Probably New",
@@ -329,13 +335,14 @@ timeline.push(participant_id_entry);
         ],
         required: true
       }
-    ],
-    data: {
-      word: jsPsych.timelineVariable("word"),
-      condition: jsPsych.timelineVariable("condition"),
-      list: jsPsych.timelineVariable("list")
-    }
-  };
+    ];
+  },
+  data: {
+    word: jsPsych.timelineVariable("word"),
+    condition: jsPsych.timelineVariable("condition"),
+    list: jsPsych.timelineVariable("list")
+  }
+};
 
   //push test blocks to match trial 
   //STILL NEED TO MATCH THE LIST RANDOMIZATION
