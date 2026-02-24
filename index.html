@@ -214,7 +214,7 @@ timeline.push(participant_id_entry);
       list: 1,
       studied: ["Table", "Couch"],
       critical: "Chair",
-      weak: ["Floor", "Bed"],
+      weak: ["Floor", "cushion"],
       unrelated: ["Ball","Shoe"]
     },
     {
@@ -317,8 +317,10 @@ timeline.push(participant_id_entry);
     type: jsPsychSurveyLikert,
     questions: [
       {
-        prompt: "<h2>%word%</h2>",
-        
+        prompt: function(){
+          var word = jsPsych.evaluateTimelineVariable("word");
+          return "<h2>" + word + "</h2>";
+      },
         labels: [
           "Definitely New",
           "Probably New",
