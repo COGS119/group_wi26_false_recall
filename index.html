@@ -86,6 +86,8 @@ timeline.push(enter_fullscreen);
       audio: "stimuli/Cogs 119 List 6.wav"},
     ];
 
+   var randomized_lists = memory_lists.shuffle 
+
  // survey for participant id
  var participant_id_entry = {
    type: jsPsychSurveyText,
@@ -110,9 +112,9 @@ timeline.push(participant_id_entry);
 
   //for loop for trials
   //contains list stimulus, free recall, and gap 
-   for (let i = 0; i < memory_lists.length; i++) {
+   for (let i = 0; i < randomized_lists.length; i++) {
     //get one of the lists
-    var current_list = memory_lists[i];
+    var current_list = randomized_lists[i];
     console.log(current_list);
     var trial = {
       type: jsPsychAudioKeyboardResponse,
@@ -124,7 +126,10 @@ timeline.push(participant_id_entry);
 
     var free_recall = {
       type: jsPsychSurveyText,
-      preamble:"Please write down every word you remeber being in the list given. Only write the word if you are fairly confident it was present. You do not need to write them in the order they were stated  ",
+      preamble:`<p>Please write down every word you remeber being in the list given.
+         Only write the word if you are fairly confident it was present. 
+         You do not need to write them in the order they were stated <p>
+          <p> Once you complete this page, you will start the next list<p>  `,
       questions: [
         { 
         prompt:"word 1"
@@ -164,22 +169,23 @@ timeline.push(participant_id_entry);
      timeline.push(trial);
      timeline.push(free_recall);
      
-   }
+  }
+  //end of for loop
 
   //present each element in the list during the memory phase
-  var number_words_in_list = 15;
-  var current_list = memory_lists[0];
-  for (let i = 1; i <= number_words_in_list; i++) {
-    //present the current word in the list
-    var trial = {
-      type: jsPsychHtmlKeyboardResponse,
-      choices: [],
-      stimulus: current_list["word_" + i],
-      trial_duration: 1500,
-      post_trial_gap: 5000
-    }
-    timeline.push(trial);
-  }
+  // var number_words_in_list = 15;
+  // var current_list = memory_lists[0];
+  // for (let i = 1; i <= number_words_in_list; i++) {
+  //   //present the current word in the list
+  //   var trial = {
+  //     type: jsPsychHtmlKeyboardResponse,
+  //     choices: [],
+  //     stimulus: current_list["word_" + i],
+  //     trial_duration: 1500,
+  //     post_trial_gap: 5000
+  //   }
+  //   timeline.push(trial);
+  // }
 
 
  
