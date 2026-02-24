@@ -86,7 +86,7 @@ timeline.push(enter_fullscreen);
       audio: "stimuli/Cogs 119 List 6.wav"},
     ];
 
-   var randomized_lists = memory_lists.shuffle 
+   var randomized_lists = jsPsych.randomization.shuffle(memory_lists); 
    var lists_length = 6
 
  // survey for participant id
@@ -297,17 +297,18 @@ timeline.push(participant_id_entry);
     //Randomize middle
     var middle_items = [
       studied_second,
-      weak_words,
-      unrelated_words
+      ...weak_words,
+      ...unrelated_words
     ];
 
     middle_items = jsPsych.randomization.shuffle(middle_items);
 
     var block = [
       first_word,
-      middle_items,
+      ...middle_items,
       critical_word
     ];
+    block = jsPsych.randomization.shuffle(block);
     recognition_blocks.push(block);
   });
 
