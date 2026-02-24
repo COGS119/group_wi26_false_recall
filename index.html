@@ -384,8 +384,20 @@ var recognition_trial = {
   button_label: "→"
   };
   timeline.push(recognition_critical_lures);
+  
+  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
+  //this portion of the code ensures that the data gets sent to be stored on OSF
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "G6o3Tqm4buni",
+    filename: filename,
+    data_string: () => jsPsych.data.get().csv()
+  };
+  timeline.push(save_data);
+  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
 
-  //FEEDBACK
+ //FEEDBACK
   var feedback = {
     type: jsPsychSurveyText,
     preamble: "<p>Thank you for participating!</p>",
@@ -414,23 +426,10 @@ var recognition_trial = {
   };
 
 timeline.push(feedback);
-  
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
-  //this portion of the code ensures that the data gets sent to be stored on OSF
-  const save_data = {
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "G6o3Tqm4buni",
-    filename: filename,
-    data_string: () => jsPsych.data.get().csv()
-  };
-  timeline.push(save_data);
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
-
-
 
   /* start the experiment */
   jsPsych.run(timeline);
+
 
 </script>
 
