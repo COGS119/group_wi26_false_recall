@@ -87,7 +87,7 @@ timeline.push(enter_fullscreen);
     ];
 
    var randomized_lists = jsPsych.randomization.shuffle(memory_lists); 
-   var lists_length = 6
+   var lists_length = randomized_lists.length;
 
  // survey for participant id
  var participant_id_entry = {
@@ -382,7 +382,36 @@ timeline.push(participant_id_entry);
   };
   timeline.push(recognition_critical_lures);
 
+  //FEEDBACK
+  var feedback = {
+    type: jsPsychSurveyText,
+    preamble: "<p>Thank you for participating!</p>",
+    questions: [
+      {
+        prompt: "What do you think this experiment was about?",
+          rows: 4,
+          required: true },
+      {
+        prompt: "How did you feel while completing the experiment?",
+          rows: 3,
+          required: true },
+      {
+        prompt: "Did you find the tasks easy, moderately challenging, or extremely difficult to complete? Please explain why.",
+          rows: 5,
+          required: true },
+      {
+        prompt: "Did you experience any technical issues? If so, please explain what issues you experienced.",
+          rows: 3,
+          required: true },
+      {
+        prompt: "Do you have any additional comments or feedback about your experience with the experiment?",
+          rows: 4,
+          required: true }
+    ]
+  };
 
+timeline.push(feedback);
+  
   //PLEASE KEEP FOR ALL FUTURE ITERATIONS
   //this portion of the code ensures that the data gets sent to be stored on OSF
   const save_data = {
