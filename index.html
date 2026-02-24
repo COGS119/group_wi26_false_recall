@@ -57,18 +57,18 @@
 timeline.push(enter_fullscreen);
 
   //preloading audio here
-  var preload = {
-    type: jsPsychPreload,
-    audio: [
-      'audio/find_Cogs 119 List 1.wav', 
-    'audio/find_Cogs 119 List 2.wav', 
-    'audio/find_Cogs 119 List 3.wav', 
-    'audio/find_Cogs 119 List 4.wav', 
-    'audio/find_Cogs 119 List 5.wav',
-    'audio/find_Cogs 119 List 6.wav'
-  ]
-  };
-  timeline.push(preload);
+  // var preload = {
+  //   type: jsPsychPreload,
+  //   audio: [
+  //    'audio/find_Cogs 119 List 1.wav', 
+  //   'audio/find_Cogs 119 List 2.wav', 
+  //   'audio/find_Cogs 119 List 3.wav', 
+  //   'audio/find_Cogs 119 List 4.wav', 
+  //   'audio/find_Cogs 119 List 5.wav',
+  //   'audio/find_Cogs 119 List 6.wav'
+  // ]
+  // };
+  // timeline.push(preload);
 
   //Welcome message
   var welcome = {
@@ -93,7 +93,7 @@ timeline.push(enter_fullscreen);
       audio: "stimuli/Cogs 119 List 6.wav"},
     ];
 
-   var randomized_lists = jsPsych.randomization.shuffle(memory_lists); 
+   var ra s = jsPsych.randomization.shuffle(memory_lists); 
    var lists_length = randomized_lists.length;
 
  // survey for participant id
@@ -221,7 +221,7 @@ timeline.push(participant_id_entry);
       list: 1,
       studied: ["Table", "Couch"],
       critical: "Chair",
-      weak: ["Floor", "cushion"],
+      weak: ["Floor", "Cushion"],
       unrelated: ["Ball","Shoe"]
     },
     {
@@ -325,8 +325,10 @@ var recognition_trial = {
   questions: function() {
     return [
       {
-        prompt: "<h2>%word%</h2>",
-        
+        prompt: function(){
+          var word = jsPsych.evaluateTimelineVariable("word");
+          return "<h2>" + word + "</h2>";
+        },
         labels: [
           "Definitely New",
           "Probably New",
