@@ -78,22 +78,74 @@ timeline.push(enter_fullscreen);
 
   timeline.push(welcome)
 
-  var memory_lists = [
-    { list: 1,
-      audio: "stimuli/Cogs 119 List 1.wav"},
-    { list: 2,
-      audio: "stimuli/Cogs 119 List 2.wav"},
-    { list: 3, 
-      audio: "stimuli/Cogs 119 List 3.wav"},
-    { list: 4,
-      audio: "stimuli/Cogs 119 List 4.wav"},
-    { list: 5,
-      audio: "stimuli/Cogs 119 List 5.wav"},
-    { list: 6,
-      audio: "stimuli/Cogs 119 List 6.wav"},
-    ];
+  // var memory_lists = [
+  //   { list: 1,
+  //     audio: "stimuli/Cogs 119 List 1.wav"},
+  //   { list: 2,
+  //     audio: "stimuli/Cogs 119 List 2.wav"},
+  //   { list: 3, 
+  //     audio: "stimuli/Cogs 119 List 3.wav"},
+  //   { list: 4,
+  //     audio: "stimuli/Cogs 119 List 4.wav"},
+  //   { list: 5,
+  //     audio: "stimuli/Cogs 119 List 5.wav"},
+  //   { list: 6,
+  //     audio: "stimuli/Cogs 119 List 6.wav"},
+  //   ];
 
-   var randomized_lists = jsPsych.randomization.shuffle(memory_lists); 
+  //Test Blocks for each list including he word condition
+  var lists_array = [
+    {
+      list: 1,
+      studied: ["Table", "Couch"],
+      critical: "Chair",
+      weak: ["Floor", "Cushion"],
+      unrelated: ["Ball","Shoe"],
+      audio: "stimuli/Cogs 119 List 1.wav"
+    },
+    {
+      list: 2,
+      studied: ["Hill", "Peak"],
+      critical: "Mountain",
+      weak: ["Snow", "Hike"],
+      unrelated: ["Car","Draw"],
+      audio: "stimuli/Cogs 119 List 2.wav"
+    },
+    {
+      list: 3,
+      studied: ["Thread", "Pin"],
+      critical: "Needle",
+      weak: ["Stitch", "Splinter"],
+      unrelated: ["Stop","Fast"],
+      audio: "stimuli/Cogs 119 List 3.wav"
+    },
+    {
+      list: 4,
+      studied: ["Smooth", "Touch"],
+      critical: "Rough",
+      weak: ["Spike", "Chalk"],
+      unrelated: ["Key","Project"],
+      audio: "stimuli/Cogs 119 List 4.wav"
+    },
+    {
+      list: 5,
+      studied: ["Bed", "Tired"],
+      critical: "Sleep",
+      weak: ["Coma", "Calm"],
+      unrelated: ["Fish","Chess"],
+      audio: "stimuli/Cogs 119 List 5.wav"
+    },
+    {
+      list: 6,
+      studied: ["Sour", "Sugar"],
+      critical: "Sweet",
+      weak: ["Cherry", "Salty"],
+      unrelated: ["Door","Ghost"],
+      audio: "stimuli/Cogs 119 List 6.wav"
+    },
+  ];  
+
+   var randomized_lists = jsPsych.randomization.shuffle(lists_array); 
    var lists_length = randomized_lists.length;
 
  // survey for participant id
@@ -215,56 +267,12 @@ timeline.push(participant_id_entry);
   //push recognition test intructions
   timeline.push(recognition_intro);
 
-  //Test Blocks for each list including he word condition
-  var recognition_structure = [
-    {
-      list: 1,
-      studied: ["Table", "Couch"],
-      critical: "Chair",
-      weak: ["Floor", "Cushion"],
-      unrelated: ["Ball","Shoe"]
-    },
-    {
-      list: 2,
-      studied: ["Hill", "Peak"],
-      critical: "Mountain",
-      weak: ["Snow", "Hike"],
-      unrelated: ["Car","Draw"]
-    },
-    {
-      list: 3,
-      studied: ["Thread", "Pin"],
-      critical: "Needle",
-      weak: ["Stitch", "Splinter"],
-      unrelated: ["Stop","Fast"]
-    },
-    {
-      list: 4,
-      studied: ["Smooth", "Touch"],
-      critical: "Rough",
-      weak: ["Spike", "Chalk"],
-      unrelated: ["Key","Project"]
-    },
-    {
-      list: 5,
-      studied: ["Bed", "Tired"],
-      critical: "Sleep",
-      weak: ["Coma", "Calm"],
-      unrelated: ["Fish","Chess"]
-    },
-    {
-      list: 6,
-      studied: ["Sour", "Sugar"],
-      critical: "Sweet",
-      weak: ["Cherry", "Salty"],
-      unrelated: ["Door","Ghost"]
-    },
-  ];
+  
 
   //Make the 7 word test blocks for each list
   var recognition_blocks = [];
 
-  recognition_structure.forEach(function(listObj){
+  randomized_lists.forEach(function(listObj){
     //First studied work - 5 randomized from second sudied, weakly related, and unrelated - critical lure
     
     //First Studied word
@@ -318,7 +326,9 @@ timeline.push(participant_id_entry);
     ];
     // block = jsPsych.randomization.shuffle(block);
     recognition_blocks.push(block);
+    
   });
+
 
 var recognition_trial = {
   type: jsPsychSurveyLikert,
