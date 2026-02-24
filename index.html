@@ -57,18 +57,18 @@
 timeline.push(enter_fullscreen);
 
   //preloading audio here
-  var preload = {
-    type: jsPsychPreload,
-    audio: [
-     'stimuli/Cogs 119 List 1.wav', 
-    'stimuli/Cogs 119 List 2.wav', 
-    'stimuli/Cogs 119 List 3.wav', 
-    'stimuli/Cogs 119 List 4.wav', 
-    'stimuli/Cogs 119 List 5.wav',
-    'stimuli/Cogs 119 List 6.wav'
-  ]
-  };
-  timeline.push(preload);
+  // var preload = {
+  //   type: jsPsychPreload,
+  //   audio: [
+  //    'stimuli/Cogs 119 List 1.wav', 
+  //   'stimuli/Cogs 119 List 2.wav', 
+  //   'stimuli/Cogs 119 List 3.wav', 
+  //   'stimuli/Cogs 119 List 4.wav', 
+  //   'stimuli/Cogs 119 List 5.wav',
+  //   'stimuli/Cogs 119 List 6.wav'
+  // ]
+  // };
+  // timeline.push(preload);
 
   //Welcome message
   var welcome = {
@@ -324,7 +324,7 @@ timeline.push(participant_id_entry);
       ...middle_items,
       critical_word
     ];
-    // block = jsPsych.randomization.shuffle(block);
+    block = jsPsych.randomization.shuffle(block);
     recognition_blocks.push(block);
     
   });
