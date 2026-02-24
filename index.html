@@ -317,9 +317,8 @@ timeline.push(participant_id_entry);
     type: jsPsychSurveyLikert,
     questions: [
       {
-        prompt: function(){
-          return "<h2>" + jsPsych.timelineVariable("word") + "</h2>";
-        },
+        prompt: "<h2>%word%</h2>",
+        
         labels: [
           "Definitely New",
           "Probably New",
