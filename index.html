@@ -119,7 +119,7 @@ timeline.push(participant_id_entry);
     console.log(current_list);
     var trial = {
       type: jsPsychAudioKeyboardResponse,
-      choices: [],
+      choices: ["f"],
       stimulus: current_list.audio,
       trial_duration: 22500,
       post_trial_gap: 1000
@@ -127,10 +127,11 @@ timeline.push(participant_id_entry);
 
     var free_recall = {
       type: jsPsychSurveyText,
-      preamble:`<p>Please write down every word you remeber being in the list given.
+      preamble:`
+        <p>Please write down every word you remeber being in the list given.
          Only write the word if you are fairly confident it was present. 
          You do not need to write them in the order they were stated <p>
-          <p> Once you complete this page, you will start the next list<p>  `,
+          <p> Once you complete this page, the next list will begin playing automatically<p>  `,
       questions: [
         { 
         prompt:"word 1"
@@ -256,42 +257,42 @@ timeline.push(participant_id_entry);
   //Make the 7 word test blocks for each list
   var recognition_blocks = [];
 
-  recognition_structure.forEach(function(list_obj){
+  recognition_structure.forEach(function(listObj){
     //First studied work - 5 randomized from second sudied, weakly related, and unrelated - critical lure
     
     //First Studied word
     var first_word = {
-      word: list_obj.studied[0],
+      word: listObj.studied[0],
       condition: "studied",
-      list: list_obj.list
+      list: listObj.list
     };
 
     //second studied word
     var studied_second = {
-      word: list_obj.studied[1],
+      word: listObj.studied[1],
       condition: "studied",
-      list: list_obj.list
+      list: listObj.list
     };
 
     //weakly related words
-    var weak_words = list_obj.weak.map(w =>({
+    var weak_words = listObj.weak.map(w =>({
       word: w,
       condition: "weakly related",
-      list: list_obj.list
+      list: listObj.list
     }));
     
     //unrelated words
-    var unrelated_words = list_obj.unrelated.map(w => ({
+    var unrelated_words = listObj.unrelated.map(w => ({
       word: w,
       condition: "unrelated",
-      list: list_obj.list
+      list: listObj.list
     }));
 
     //critical lure
     var critical_word = {
-      word: list_obj.critical,
+      word: listObj.critical,
       condition: "critical",
-      list: list_obj.list
+      list: listObj.list
     };
 
     //Randomize middle
