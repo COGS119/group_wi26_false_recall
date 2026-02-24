@@ -87,6 +87,7 @@ timeline.push(enter_fullscreen);
     ];
 
    var randomized_lists = memory_lists.shuffle 
+   var lists_length = 6
 
  // survey for participant id
  var participant_id_entry = {
@@ -112,7 +113,7 @@ timeline.push(participant_id_entry);
 
   //for loop for trials
   //contains list stimulus, free recall, and gap 
-   for (let i = 0; i < randomized_lists.length; i++) {
+   for (let i = 0; i < lists_length; i++) {
     //get one of the lists
     var current_list = randomized_lists[i];
     console.log(current_list);
