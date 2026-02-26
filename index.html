@@ -47,14 +47,6 @@
   jsPsych.data.addProperties({
     random_id: random_id,
   });
-  //Randomizes participants list order condition
-var condition = jsPsych.randomization.sampleWithoutReplacement(
-  ["long_exposure", "short_exposure"], 1
-)[0];
-
-jsPsych.data.addProperties({
-  condition: condition
-});
 
 //PLEASE KEEP FOR ALL FUTURE ITERATIONS
 
@@ -188,11 +180,11 @@ timeline.push(participant_id_entry);
     console.log(current_list);
     var trial = {
       type: jsPsychAudioKeyboardResponse,
-      choices: [],
+      choices: "NO_KEYS",
       stimulus: current_list.audio,
-      trial_duration: (condition === "long_exposure") ? 22500 : 18000,
+      response_ends_trial: false,
       post_trial_gap: 1000,
-      data: { task: "encoding" },
+      data: {task: "encoding"}
     }
 
 //Collects participants' free recall responses after hearing the given words
