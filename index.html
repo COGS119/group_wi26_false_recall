@@ -385,6 +385,58 @@ var recognition_trial = {
   };
   timeline.push(recognition_critical_lures);
   
+ // LITTLE SPEED GAME 
+  timeline.push({
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <h2>Speed Memmory Game</h2>
+    <p>Press <strong>S</strong> if the word was studied.</p>
+    <p>Press <strong>N</strong> if it was NOT studied.</p>
+    <p>Respond as quickly as possible.</p>
+    <p>Press any key to begin.</p>
+  `
+});
+
+var game_words = jsPsych.randomization.shuffle(
+  randomized_lists.flatMap(l => l.studied.concat(l.critical))
+);
+
+timeline.push({
+  timeline: [{
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: () => "<h1>" + jsPsych.timelineVariable("word") + "</h1>",
+    choices: ["s","n"],
+    data: {
+      task: "speed_game",
+      correct: jsPsych.timelineVariable("correct")
+    },
+    on_finish: function(data){
+  data.correct = data.response === data.correct;
+}
+  }],
+  timeline_variables: game_words.map(word => ({
+    word: word,
+    correct: randomized_lists.some(l => l.studied.includes(word)) ? "s" : "n"
+  }))
+});
+  
+timeline.push({
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function(){
+
+    var d = jsPsych.data.get().filter({task: "speed_game"});
+    var acc = Math.round(d.filter({correct:true}).count() / d.count() * 100);
+    var rt = Math.round(d.select("rt").mean());
+
+    return `
+      <h2>Game Results</h2>
+      <p>Accuracy: ${acc}%</p>
+      <p>Average RT: ${rt} ms</p>
+      <p>Press any key to continue.</p>
+    `;
+  }
+});
+  
   //PLEASE KEEP FOR ALL FUTURE ITERATIONS
   //this portion of the code ensures that the data gets sent to be stored on OSF
   const save_data = {
