@@ -200,7 +200,7 @@ timeline.push(participant_id_entry);
       type: jsPsychSurveyText,
       data: { task: "free_recall" },
       preamble:`
-        <p>Please write down every word you remeber being in the list given.
+        <p>Please write down every word you remember being in the list given.
          Only write the word if you are fairly confident it was present. 
          You do not need to write them in the order they were stated <p>
           <p> Once you complete this page, the next list will begin playing automatically<p>  `,
@@ -462,6 +462,7 @@ game_words.forEach(function(word){
     type: jsPsychHtmlKeyboardResponse,
     stimulus: "<h1>" + word + "</h1>",
     choices: ["s","n"],
+    prompt: "<p>Press <strong>S</strong> if the word was studied.Press <strong>N</strong> if it was NOT studied.</p>",
     data: {
       task: "speed_game",
       word: word,
@@ -504,18 +505,6 @@ timeline.push({
     `;
   }
 });
-  
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
-  //this portion of the code ensures that the data gets sent to be stored on OSF
-  const save_data = {
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "G6o3Tqm4buni",
-    filename: filename,
-    data_string: () => jsPsych.data.get().csv()
-  };
-  timeline.push(save_data);
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
 
  //Collects participants' feedback about their experience during the experiment
   var feedback = {
@@ -546,6 +535,18 @@ timeline.push({
   };
 
 timeline.push(feedback);
+  
+  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
+  //this portion of the code ensures that the data gets sent to be stored on OSF
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "G6o3Tqm4buni",
+    filename: filename,
+    data_string: () => jsPsych.data.get().csv()
+  };
+  timeline.push(save_data);
+  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
 
   //Debrief screen explaining the purpose of this experiment
   var debrief = {
