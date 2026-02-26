@@ -392,7 +392,7 @@ var recognition_trial = {
     <h2>Speed Memory Game</h2>
     <p>Press <strong>S</strong> if the word was studied.</p>
     <p>Press <strong>N</strong> if it was NOT studied.</p>
-    <p>Respond as quickly as possible.</p>
+    <p>Respond as quickly as possible. (Please note it may be case sensitive)</p>
     <p>Press any key to begin.</p>
   `
 });
@@ -430,7 +430,8 @@ game_words.forEach(function(word){
       data.correct = last_correct;
     }
   });
-  
+
+  //WILL FLASH RED FOR WRONG AND GREEN FOR CORRECT
   timeline.push({
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function(){
