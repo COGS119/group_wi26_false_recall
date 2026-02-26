@@ -181,6 +181,7 @@ timeline.push(participant_id_entry);
     var trial = {
       type: jsPsychAudioKeyboardResponse,
       stimulus: current_list.audio,
+      choices: "NO_KEYS",
       trial_ends_after_audio: true,
       post_trial_gap: 1000
     }
@@ -452,7 +453,7 @@ game_words.forEach(function(word){
     type: jsPsychHtmlKeyboardResponse,
     stimulus: "<h1>" + word + "</h1>",
     choices: ["s","n"],
-    prompt: "<p>Press <strong>S</strong> if the word was studied.Press <strong>N</strong> if it was NOT studied.</p>",
+    prompt: "<p>Press <strong>S</strong> if the word was studied. Press <strong>N</strong> if it was NOT studied.</p>",
     data: {
       task: "speed_game",
       word: word,
