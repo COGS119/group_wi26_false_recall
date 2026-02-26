@@ -6,6 +6,7 @@
   <script src="https://unpkg.com/jspsych@8.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-likert@2.0.0"></script>
   <!-- load in the recall lists-->
   <script src="https://unpkg.com/@jspsych/plugin-preload@2.0.0"></script>
@@ -22,20 +23,20 @@
 <script>
 
   /* initialize jsPsych */
+  //Will show a progress bar on top and will automatically update
   var jsPsych = initJsPsych({
+    show_progress_bar: true,
+    auto_update_progress_bar: true,
     on_finish: function () {
       jsPsych.data.displayData();
     }
   });
 
-
-
-  //Hi
-
   /* create timeline */
   var timeline = [];
 
   //PLEASE KEEP FOR ALL FUTURE ITERATIONS
+  
   //create a unique filename by combining a random string and a millisecond counter (to avoid duplicates)
   var random_id = jsPsych.randomization.randomID(10);
   const date = new Date();
@@ -46,10 +47,18 @@
   jsPsych.data.addProperties({
     random_id: random_id,
   });
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
+  //Randomizes participants list order condition
+var condition = jsPsych.randomization.sampleWithoutReplacement(
+  ["long_exposure", "short_exposure"], 1
+)[0];
 
+jsPsych.data.addProperties({
+  condition: condition
+});
 
-//make the experiment full screen
+//PLEASE KEEP FOR ALL FUTURE ITERATIONS
+
+//Makes the experiment full screen
   var enter_fullscreen = {
   type: jsPsychFullscreen,
   fullscreen_mode: true
@@ -144,7 +153,8 @@ timeline.push(enter_fullscreen);
       audio: "stimuli/Cogs 119 List 6.wav"
     },
   ];  
-
+  
+//Randomizes the order of the list of words
    var randomized_lists = jsPsych.randomization.shuffle(lists_array); 
    var lists_length = randomized_lists.length;
 
@@ -180,12 +190,15 @@ timeline.push(participant_id_entry);
       type: jsPsychAudioKeyboardResponse,
       choices: [],
       stimulus: current_list.audio,
-      trial_duration: 22500,
-      post_trial_gap: 1000
+      trial_duration: (condition === "long_exposure") ? 22500 : 18000,
+      post_trial_gap: 1000,
+      data: { task: "encoding" },
     }
 
+//Collects participants' free recall responses after hearing the given words
     var free_recall = {
       type: jsPsychSurveyText,
+      data: { task: "free_recall" },
       preamble:`
         <p>Please write down every word you remeber being in the list given.
          Only write the word if you are fairly confident it was present. 
@@ -247,9 +260,7 @@ timeline.push(participant_id_entry);
    ` };
 
   //push recognition test intructions
-  timeline.push(recognition_intro);
-
-  
+  timeline.push(recognition_intro);  
 
   //Make the 7 word test blocks for each list
   var recognition_blocks = [];
@@ -299,6 +310,7 @@ timeline.push(participant_id_entry);
       ...unrelated_words
     ];
 
+// Randomize the word order with each block
     middle_items = jsPsych.randomization.shuffle(middle_items);
 
     var block = [
@@ -308,10 +320,19 @@ timeline.push(participant_id_entry);
     ];
     block = jsPsych.randomization.shuffle(block);
     recognition_blocks.push(block);
-    
   });
 
+// Attention check during recognition test
+    var attention_item = {
+      word: "Click: Definitely New",
+      condition: "attention_check",
+      list: "none"
+    };
 
+    var random_block_index = Math.floor(Math.random() * recognition_blocks.length);
+    recognition_blocks[random_block_index].push(attention_item);
+
+// Recognition test where participants rate each word
 var recognition_trial = {
   type: jsPsychSurveyLikert,
   questions: function() {
@@ -334,8 +355,9 @@ var recognition_trial = {
   data: {
     word: jsPsych.timelineVariable("word"),
     condition: jsPsych.timelineVariable("condition"),
-    list: jsPsych.timelineVariable("list")
-  }
+    list: jsPsych.timelineVariable("list"),
+    task: "recognition"
+  },
 };
 
   //push test blocks to match trial 
@@ -384,8 +406,118 @@ var recognition_trial = {
   button_label: "→"
   };
   timeline.push(recognition_critical_lures);
+  
+ // Bonus Speed Memory Game, where participants press S for studied words and N for Not Studied words 
+  timeline.push({
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+    <h2>Speed Memory Game</h2>
+    <p>Press <strong>S</strong> if the word was studied.</p>
+    <p>Press <strong>N</strong> if it was NOT studied.</p>
+    <p>Respond as quickly as possible. (Please note it may be case sensitive)</p>
+    <p>Press any key to begin.</p>
+  `
+});
+//Combines words for the speed game
+var studied_words = [];
+var lure_words = [];
 
-  //FEEDBACK
+randomized_lists.forEach(function(list){
+  studied_words = studied_words.concat(list.studied);
+  lure_words.push(list.critical);
+});
+
+var game_words = jsPsych.randomization.shuffle(
+  studied_words.concat(lure_words)
+);
+
+// Speed Game Attention Check
+var random_index = Math.floor(Math.random() * game_words.length);
+game_words.splice(random_index, 0, "S");
+  
+var last_correct = false;  
+  
+//Presents the word and records particpants accuracy
+game_words.forEach(function(word){
+
+  // Hidden speed attention check click N for correct answer
+  if(word === "S"){
+    timeline.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "<h1>Click N</h1>",
+      choices: ["s","n"],
+      data: { task: "speed_attention_check" },
+      on_finish: function(data){
+        var response_key = data.response.toLowerCase();
+        data.correct = (response_key === "n"); 
+      }
+    });
+    return; 
+  }
+  
+  var correct_answer = studied_words.includes(word) ? "s" : "n";
+
+  //Displays participants' overall accuracy in the speed game
+ timeline.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "<h1>" + word + "</h1>",
+    choices: ["s","n"],
+    data: {
+      task: "speed_game",
+      word: word,
+      correct_answer: correct_answer
+    },
+    on_finish: function(data){
+      var response_key = data.response.toLowerCase();
+      last_correct = (response_key === correct_answer);
+      data.correct = last_correct;
+    }
+  });
+
+  //WILL FLASH RED FOR WRONG AND GREEN FOR CORRECT
+  timeline.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function(){
+      return last_correct
+        ? "<h2 style='color:green;'>Correct! </h2>"
+        : "<h2 style='color:red;'>Wrong </h2>";
+    },
+    choices: "NO_KEYS",
+    trial_duration: 800
+  });
+
+});
+  
+timeline.push({
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function(){
+
+    var d = jsPsych.data.get().filter({task: "speed_game"});
+    var acc = Math.round(d.filter({correct:true}).count() / d.count() * 100);
+    var rt = Math.round(d.select("rt").mean());
+
+    return `
+      <h2>Game Results</h2>
+      <p>Accuracy: ${acc}%</p>
+      <p>Average RT: ${rt} ms</p>
+      <p>Press any key to continue.</p>
+    `;
+  }
+});
+  
+  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
+  //this portion of the code ensures that the data gets sent to be stored on OSF
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "G6o3Tqm4buni",
+    filename: filename,
+    data_string: () => jsPsych.data.get().csv()
+  };
+  timeline.push(save_data);
+  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
+
+ //Collects participants' feedback about their experience during the experiment
   var feedback = {
     type: jsPsychSurveyText,
     preamble: "<p>Thank you for participating!</p>",
@@ -414,23 +546,29 @@ var recognition_trial = {
   };
 
 timeline.push(feedback);
-  
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
-  //this portion of the code ensures that the data gets sent to be stored on OSF
-  const save_data = {
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "G6o3Tqm4buni",
-    filename: filename,
-    data_string: () => jsPsych.data.get().csv()
-  };
-  timeline.push(save_data);
-  //PLEASE KEEP FOR ALL FUTURE ITERATIONS
 
+  //Debrief screen explaining the purpose of this experiment
+  var debrief = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+      <h2>About This Experiment</h2>
+      <p>This experiment examined false memory using the Deese-Roediger-McDermott paradigm.</p>
+      <p>Throughout this experiment, participants heard a list of words (for example: bed, mountain, needle, smooth)
+      and were tested on the correct number of words they were able to list.</p>
+      <p>In which many participants will falsely remember hearing a word that was not in the given list.</p>
+      <p>This will demonstrate how memory is easily influenced by semantic associations.</p>
+      <p>Thank you for participating in our study!</p>
+    `,
+    choices: ["Finish"]
+  };
+
+  timeline.push(debrief);
+      
 
 
   /* start the experiment */
   jsPsych.run(timeline);
+
 
 </script>
 
