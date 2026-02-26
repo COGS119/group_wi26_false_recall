@@ -409,11 +409,13 @@ var game_words = jsPsych.randomization.shuffle(
   studied_words.concat(lure_words)
 );
 
+var last_correct = false;
+
 game_words.forEach(function(word){
 
   var correct_answer = studied_words.includes(word) ? "s" : "n";
 
-  timeline.push({
+ timeline.push({
     type: jsPsychHtmlKeyboardResponse,
     stimulus: "<h1>" + word + "</h1>",
     choices: ["s","n"],
@@ -423,20 +425,17 @@ game_words.forEach(function(word){
       correct_answer: correct_answer
     },
     on_finish: function(data){
-      data.correct = data.response === correct_answer;
+      last_correct = (data.response === correct_answer);
+      data.correct = last_correct;
     }
   });
-
+  
   timeline.push({
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function(){
-      var last = jsPsych.data.get().last(1).values()[0];
-
-      if(last.correct){
-        return "<h2 style='color:green;'>Correct! </h2>";
-      } else {
-        return "<h2 style='color:red;'>Wrong! </h2>";
-      }
+      return last_correct
+        ? "<h2 style='color:green;'>Correct! </h2>"
+        : "<h2 style='color:red;'>Wrong </h2>";
     },
     choices: "NO_KEYS",
     trial_duration: 800
