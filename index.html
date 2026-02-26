@@ -425,6 +425,7 @@ game_words.forEach(function(word){
       correct_answer: correct_answer
     },
     on_finish: function(data){
+      var response_key = data.response.toLowerCase();
       last_correct = (data.response === correct_answer);
       data.correct = last_correct;
     }
