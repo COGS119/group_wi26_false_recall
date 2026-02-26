@@ -427,6 +427,21 @@ game_words.forEach(function(word){
     }
   });
 
+  timeline.push({
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: function(){
+      var last = jsPsych.data.get().last(1).values()[0];
+
+      if(last.correct){
+        return "<h2 style='color:green;'>Correct! </h2>";
+      } else {
+        return "<h2 style='color:red;'>Wrong! </h2>";
+      }
+    },
+    choices: "NO_KEYS",
+    trial_duration: 800
+  });
+
 });
   
 timeline.push({
