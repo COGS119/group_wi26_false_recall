@@ -180,11 +180,10 @@ timeline.push(participant_id_entry);
     console.log(current_list);
     var trial = {
       type: jsPsychAudioKeyboardResponse,
-      choices: "NO_KEYS",
+      choices: [],
       stimulus: current_list.audio,
-      response_ends_trial: false,
+      trial_duration: 22500,
       post_trial_gap: 1000,
-      data: {task: "encoding"}
     }
 
 //Collects participants' free recall responses after hearing the given words
