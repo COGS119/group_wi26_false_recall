@@ -389,7 +389,7 @@ var recognition_trial = {
   timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
-    <h2>Speed Memmory Game</h2>
+    <h2>Speed Memory Game</h2>
     <p>Press <strong>S</strong> if the word was studied.</p>
     <p>Press <strong>N</strong> if it was NOT studied.</p>
     <p>Respond as quickly as possible.</p>
@@ -397,34 +397,36 @@ var recognition_trial = {
   `
 });
 
+var studied_words = [];
+var lure_words = [];
+
+randomized_lists.forEach(function(list){
+  studied_words = studied_words.concat(list.studied);
+  lure_words.push(list.critical);
+});
+
 var game_words = jsPsych.randomization.shuffle(
-  randomized_lists.flatMap(l => l.studied.concat(l.critical))
+  studied_words.concat(lure_words)
 );
 
-timeline.push({
-  timeline: [{
+game_words.forEach(function(word){
+
+  var correct_answer = studied_words.includes(word) ? "s" : "n";
+
+  timeline.push({
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: function(){
-      return "<h1>" + jsPsych.timelineVariable("word", true) + "</h1>";
-    },
+    stimulus: "<h1>" + word + "</h1>",
     choices: ["s","n"],
     data: {
       task: "speed_game",
-      correct_answer: jsPsych.timelineVariable("correct", true)
+      word: word,
+      correct_answer: correct_answer
     },
     on_finish: function(data){
-      data.correct = data.response === data.correct_answer;
+      data.correct = data.response === correct_answer;
     }
-  }],
-  
-  timeline_variables: game_words.map(function(word){
-    return {
-      word: word,
-      correct: randomized_lists.some(function(l){
-        return l.studied.includes(word);
-      }) ? "s" : "n"
-    };
-  })
+  });
+
 });
   
 timeline.push({
