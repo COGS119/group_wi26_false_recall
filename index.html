@@ -404,19 +404,27 @@ var game_words = jsPsych.randomization.shuffle(
 timeline.push({
   timeline: [{
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: () => "<h1>" + jsPsych.timelineVariable("word") + "</h1>",
+    stimulus: function(){
+      return "<h1>" + jsPsych.timelineVariable("word", true) + "</h1>";
+    },
     choices: ["s","n"],
-    data: { task: "speed_game" },
+    data: {
+      task: "speed_game",
+      correct_answer: jsPsych.timelineVariable("correct", true)
+    },
     on_finish: function(data){
-      var correct_answer = jsPsych.timelineVariable("correct", true);
-      data.correct = data.response === correct_answer;
+      data.correct = data.response === data.correct_answer;
     }
   }],
   
-  timeline_variables: game_words.map(word => ({
-    word: word,
-    correct: randomized_lists.some(l => l.studied.includes(word)) ? "s" : "n"
-  }))
+  timeline_variables: game_words.map(function(word){
+    return {
+      word: word,
+      correct: randomized_lists.some(function(l){
+        return l.studied.includes(word);
+      }) ? "s" : "n"
+    };
+  })
 });
   
 timeline.push({
