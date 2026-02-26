@@ -23,7 +23,10 @@
 <script>
 
   /* initialize jsPsych */
+  //Will show a progress bar on top and will automatically update
   var jsPsych = initJsPsych({
+    show_progress_bar: true,
+    auto_update_progress_bar: true,
     on_finish: function () {
       jsPsych.data.displayData();
     }
@@ -257,9 +260,7 @@ timeline.push(participant_id_entry);
    ` };
 
   //push recognition test intructions
-  timeline.push(recognition_intro);
-
-  
+  timeline.push(recognition_intro);  
 
   //Make the 7 word test blocks for each list
   var recognition_blocks = [];
@@ -319,8 +320,17 @@ timeline.push(participant_id_entry);
     ];
     block = jsPsych.randomization.shuffle(block);
     recognition_blocks.push(block);
-    
   });
+
+// Attention check during recognition test
+    var attention_item = {
+      word: "Click: Definitely New",
+      condition: "attention_check",
+      list: "none"
+    };
+
+    var random_block_index = Math.floor(Math.random() * recognition_blocks.length);
+    recognition_blocks[random_block_index].push(attention_item);
 
 // Recognition test where participants rate each word
 var recognition_trial = {
@@ -345,8 +355,9 @@ var recognition_trial = {
   data: {
     word: jsPsych.timelineVariable("word"),
     condition: jsPsych.timelineVariable("condition"),
-    list: jsPsych.timelineVariable("list")
-  }
+    list: jsPsych.timelineVariable("list"),
+    task: "recognition"
+  },
 };
 
   //push test blocks to match trial 
@@ -420,11 +431,30 @@ var game_words = jsPsych.randomization.shuffle(
   studied_words.concat(lure_words)
 );
 
-var last_correct = false;
-
+// Speed Game Attention Check
+var random_index = Math.floor(Math.random() * game_words.length);
+game_words.splice(random_index, 0, "S");
+  
+var last_correct = false;  
+  
 //Presents the word and records particpants accuracy
 game_words.forEach(function(word){
 
+  // Hidden speed attention check click N for correct answer
+  if(word === "S"){
+    timeline.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "<h1>Click N</h1>",
+      choices: ["s","n"],
+      data: { task: "speed_attention_check" },
+      on_finish: function(data){
+        var response_key = data.response.toLowerCase();
+        data.correct = (response_key === "n"); 
+      }
+    });
+    return; 
+  }
+  
   var correct_answer = studied_words.includes(word) ? "s" : "n";
 
   //Displays participants' overall accuracy in the speed game
